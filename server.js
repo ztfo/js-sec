@@ -9,10 +9,14 @@ const fs = require('fs');
 const path = require('path')
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
 require('dotenv').config();
 
 // express
 const app = express();
+
+// security headers
+app.use(helmet());
 
 // session
 const sessionConfig = {
