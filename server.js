@@ -29,6 +29,7 @@ app.use(passport.session());
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 // serve
 app.get('/', (req, res) => {
