@@ -1,6 +1,10 @@
 // modules
 const express = require('express');
+const mongoose = require('mongoose');
+const passport = require('passport');
 const session = require('express-session');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/user');
 const https = require('https');
 const fs = require('fs');
 const path = require('path')
@@ -17,10 +21,14 @@ const sessionConfig = {
   saveUninitialized: true,
 }
 
+// passport 
+app.use(session(sessionConfig));
+app.use(passport.initialize());
+app.use(passport.session());
+
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(session(sessionConfig));
 
 // serve
 app.get('/', (req, res) => {
@@ -41,6 +49,14 @@ app.post('/login', [
   console.log('Validated Login Attempt:', username, password);
   res.send('Login validated');
 });
+
+// auth routes
+const authRoutes = require('./routes/auth');
+app.use('/', authRoutes);
+
+// user routes
+const userRoutes = require('./routes/userRoutes');
+app.use('/users', userRoutes);
 
 // https
 const httpsOptions = {
