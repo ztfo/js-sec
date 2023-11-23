@@ -1,6 +1,7 @@
 // modules
 const express = require('express');
 const passport = require('passport');
+const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const https = require('https');
@@ -18,6 +19,8 @@ const sessionConfig = {
   resave: false,
   saveUninitialized: true,
 }
+
+app.use(session(sessionConfig));
 
 // passport 
 app.use(passport.initialize());
