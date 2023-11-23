@@ -1,5 +1,6 @@
 node_modules/
 certs/
+logs/
 .env
 .DS_Store
 npm-debug.log

@@ -10,10 +10,22 @@ const path = require('path')
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
+const winston = require('winston');
 require('dotenv').config();
 
 // express
 const app = express();
+
+// logs
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.json(),
+  defaultMeta: { service: 'user-service' },
+  transports: [
+    new winston.transports.File({ filename: 'logs/error.log', level: 'error'}),
+    new winston.transports.File({ filename: 'logs/combined.log' }),
+  ],
+});
 
 // security headers
 app.use(helmet());
