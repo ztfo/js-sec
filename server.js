@@ -1,5 +1,6 @@
 // modules
 const express = require('express');
+const session = require('express-session');
 const https = require('https');
 const fs = require('fs');
 const path = require('path')
@@ -9,9 +10,17 @@ require('dotenv').config();
 // express
 const app = express();
 
+// session
+const sessionConfig = {
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: true,
+}
+
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(session(sessionConfig));
 
 // serve
 app.get('/', (req, res) => {
