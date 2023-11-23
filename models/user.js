@@ -1,18 +1,31 @@
-const mongoose = require('mongoose');
-const passportLocalMongoose = require('passport-local-mongoose');
+const { Sequelize, DataTypes } = require('sequelize');
 
-// user schema
-const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
-    
-    userId: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        unique: true,
-    },
+const sequelize = new Sequelize('database', 'username', 'password', {
+    host: 'localhost',
+    dialect: 'postgres'
 });
 
-userSchema.plugin(passportLocalMongoose);
+sequelize.authenticate()
+    .then(() => console.log('Connection has been established successfully.'))
+    .catch(error => console.error('Unable to connect to the database:', error));
 
-module.exports = mongoose.model('User', userSchema);
+const User = sequelize.define('User', {
+    username: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    password: {
+        type: DataTypes.STRING,
+        allowNull: false
+    },
+    userId: {
+        type: DataTypes.UUID,
+        defaultValue: DataTypes.UUIDV4,
+        allowNull: false,
+        unique: true,
+    }
+});
+
+User.sync();
+
+module.exports = User;

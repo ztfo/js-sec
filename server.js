@@ -1,8 +1,6 @@
 // modules
 const express = require('express');
-const mongoose = require('mongoose');
 const passport = require('passport');
-const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const https = require('https');
@@ -22,7 +20,6 @@ const sessionConfig = {
 }
 
 // passport 
-app.use(session(sessionConfig));
 app.use(passport.initialize());
 app.use(passport.session());
 
