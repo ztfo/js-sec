@@ -1,9 +1,5 @@
-const { Sequelize, DataTypes } = require('sequelize');
-
-const sequelize = new Sequelize('database', 'username', 'password', {
-    host: 'localhost',
-    dialect: 'postgres'
-});
+const { DataTypes } = require('sequelize');
+const sequelize = require('./index');
 
 sequelize.authenticate()
     .then(() => console.log('Connection has been established successfully.'))
