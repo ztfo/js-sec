@@ -1,4 +1,7 @@
+require('dotenv').config();
 const express = require('express');
+const https = require('https');
+const fs = require('fs');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
 const app = express();
@@ -6,6 +9,12 @@ const app = express();
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended:true }));
+
+// https
+const httpsOptions = {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+};
 
 // serve
 app.get('/', (req, res) => {
