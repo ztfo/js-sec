@@ -8,6 +8,7 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path')
 const { body, validationResult } = require('express-validator');
+const rateLimit = require('express-rate-limit');
 require('dotenv').config();
 
 // express
@@ -21,6 +22,15 @@ const sessionConfig = {
 }
 
 app.use(session(sessionConfig));
+
+// limiter
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 100,
+  message: 'Get outta here.'
+});
+
+app.use(limiter);
 
 // passport 
 app.use(passport.initialize());
