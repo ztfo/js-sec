@@ -1,27 +1,24 @@
-require('dotenv').config();
+// modules
 const express = require('express');
 const https = require('https');
 const fs = require('fs');
+const path = require('path')
 const { body, validationResult } = require('express-validator');
-const path = require('path');
+require('dotenv').config();
+
+// express
 const app = express();
 
 // middleware
 app.use(express.json());
-app.use(express.urlencoded({ extended:true }));
-
-// https
-const httpsOptions = {
-  key: fs.readFileSync(process.env.SSL_KEY_PATH),
-  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
-};
+app.use(express.urlencoded({ extended: true }));
 
 // serve
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// post route for login
+// login
 app.post('/login', [
   body('username').isLength({ min: 3 }).trim().escape(),
   body('password').isLength({ min: 5 }).trim().escape()
@@ -36,7 +33,13 @@ app.post('/login', [
   res.send('Login validated');
 });
 
-// start
-app.listen(3000, () => {
-    console.log('ztfo is running on port 3000')
+// https
+const httpsOptions = {
+  key: fs.readFileSync(process.env.SSL_KEY_PATH),
+  cert: fs.readFileSync(process.env.SSL_CERT_PATH)
+};
+
+// https server
+https.createServer(httpsOptions, app).listen(3000, () => {
+  console.log('running...')
 });
