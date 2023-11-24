@@ -7,8 +7,8 @@ const path = require('path');
 const { body } = require('express-validator');
 
 // login
-router.get('/login', (req, res) => {
-  res.render('login');
+router.get('/login', function(req, res) {
+    res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
 
 router.post(
@@ -19,7 +19,7 @@ router.post(
   ],
   passport.authenticate('local', {
     successRedirect: '/dashboard',
-    failureRedirect: '/login',
+    failureRedirect: '/',
   })
 );
 
@@ -31,7 +31,7 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 // logout
 router.get('/logout', (req, res) => {
   req.logout();
-  res.redirect('/login');
+  res.redirect('/');
 });
 
 // registration

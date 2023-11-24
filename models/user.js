@@ -33,6 +33,8 @@ const User = sequelize.define('User', {
   }
 });
 
-User.sync();
+User.sync({ alter: true })
+    .then(() => console.log('User table created/updated successfully'))
+    .catch(error => console.error('Error creating/updating User table:', error));
 
 module.exports = User;

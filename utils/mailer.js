@@ -1,5 +1,5 @@
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
-let transporter = nodemailer.createTransport({
-    
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+
+module.exports = sgMail;
