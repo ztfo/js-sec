@@ -6,6 +6,7 @@ This is a secure web application built with Node.js and Express. It includes use
 ## Features
 
 - User registration and login with hashed passwords
+- Email verification using SendGrid
 - Form validation
 - Session management
 - Dashboard view after login
@@ -16,5 +17,4 @@ This is a secure web application built with Node.js and Express. It includes use
 - Rate limiting to prevent abuse
 - Winston logging
 - Security headers with Helmet
-- Environment variable management with dotenv
 - and some more in progress...
