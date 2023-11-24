@@ -7,11 +7,11 @@
     <body>
         <main>
             <div class="container">
-                <form id="loginForm">
+                <form id="loginForm" action="/login" method="post">
                     <fieldset>
-                        <input type="text" id="username" placeholder="Username">
-                        <input type="password" id="password" placeholder="Password">
-                        <button type="submit">let's ride</button>
+                      <input type="text" id="username" name="username" placeholder="Username">
+                      <input type="password" id="password" name="password" placeholder="Password">
+                      <button type="submit">let's ride</button>
                     </fieldset>
                 </form>
             </div>
@@ -21,6 +21,5 @@
                 <span>&copy; 2023 | made in tx, late one night.</span>
             </footer>
         </section>
-        <script src="login.js"></script>
     </body>
 </html>

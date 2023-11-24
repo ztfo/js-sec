@@ -1,6 +1,7 @@
 // modules
 const express = require('express');
 const passport = require('passport');
+require('./passport-config');
 const session = require('express-session');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
@@ -15,6 +16,10 @@ require('dotenv').config();
 
 // express
 const app = express();
+
+// view engine
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'views'));
 
 // logs
 const logger = winston.createLogger({
@@ -67,31 +72,12 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// login
-app.post(
-  '/login',
-  [
-    body('username').isLength({ min: 3 }).trim().escape(),
-    body('password').isLength({ min: 5 }).trim().escape(),
-  ],
-  (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
-    const { username, password } = req.body;
-    console.log('Validated Login Attempt:', username, password);
-    res.send('Login validated');
-  }
-);
-
 // auth routes
-const authRoutes = require('./routes/auth');
+const authRoutes = require('./routes/auth.js');
 app.use('/', authRoutes);
 
 // user routes
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/userRoutes.js');
 app.use('/users', userRoutes);
 
 // https
