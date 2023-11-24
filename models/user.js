@@ -21,6 +21,16 @@ const User = sequelize.define('User', {
     allowNull: false,
     unique: true,
   },
+  isApproved: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  },
+  isAdmin: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
+    allowNull: false,
+  }
 });
 
 User.sync();

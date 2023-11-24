@@ -56,7 +56,7 @@ router.post('/register', (req, res) => {
     }
 
     console.log('Creating user...');
-    User.create({ username, password: hashedPassword })
+    User.create({ username, password: hashedPassword, isApproved: false })
       .then((user) => {
         console.log('User created:', user);
         res.json(user);

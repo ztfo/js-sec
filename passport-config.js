@@ -11,6 +11,9 @@ passport.use(
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
+        if (!user.isApproved) {
+          return done(null, false, { message: 'You\'re not in yet.' });
+        }
         bcrypt.compare(password, user.password, (err, isMatch) => {
           if (err) {
             return done(err);
