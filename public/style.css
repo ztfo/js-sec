@@ -1,80 +1,83 @@
 /* layout */
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    flex-direction: column;
-    width: 100%;
-    height: 100vh;
-    min-height: 750px;
-    padding: 0;
-    margin: 0;
-    outline: 0;
-    color: #fff;
-    background: #000;
-    font: .5em Inconsolata, monospace;
-    letter-spacing: 1px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  width: 100%;
+  height: 100vh;
+  min-height: 750px;
+  padding: 0;
+  margin: 0;
+  outline: 0;
+  color: #fff;
+  background: #000;
+  font:
+    0.5em Inconsolata,
+    monospace;
+  letter-spacing: 1px;
 }
 
 footer {
-    text-align: center;
-    text-transform: uppercase;
-    margin-top: 5em;
+  text-align: center;
+  text-transform: uppercase;
+  margin-top: 5em;
 }
 
 /* forms */
 #loginForm {
-    margin: 0 0 3em 0;
-    border: none;
-    padding: 3em;
-    background: rgba(255,255,255,0.1);
-    min-width: 250px;
+  margin: 0 0 3em 0;
+  border: none;
+  padding: 3em;
+  background: rgba(255, 255, 255, 0.1);
+  min-width: 250px;
 }
 
 #loginForm fieldset {
-    margin: 0;
-    border: none;
-    padding: 0;
-    display: block;
+  margin: 0;
+  border: none;
+  padding: 0;
+  display: block;
 }
 
 #loginForm input {
-    display: block;
-    width: 100%;
-    margin-bottom: 1em;
+  display: block;
+  width: 100%;
+  margin-bottom: 1em;
 }
 
 input {
-    border: none;
-    background: transparent;
-    color: #fff;
-    font: 2em Inconsolate, monospace;
-    padding: .5em;
-    margin-bottom: 1em;
-    display: block;
-
+  border: none;
+  background: transparent;
+  color: #fff;
+  font:
+    2em Inconsolate,
+    monospace;
+  padding: 0.5em;
+  margin-bottom: 1em;
+  display: block;
 }
 
 input:active,
 input:focus {
-    border: none;
-    outline: none;
+  border: none;
+  outline: none;
 }
 
 button {
-    width: 100%;
-    padding: 1em;
-    border: none;
-    outline: none;
-    background: rgba(255,255,255,0.1);
-    transition: .5s ease;
-    color: #fff;
-    text-transform: uppercase;
-    border-radius: 4px;
+  width: 100%;
+  padding: 1em;
+  border: none;
+  outline: none;
+  background: rgba(255, 255, 255, 0.1);
+  transition: 0.5s ease;
+  color: #fff;
+  text-transform: uppercase;
+  border-radius: 4px;
 }
 
 button:hover {
-    background: rgba(255,255,255,0.2);
-    cursor: pointer;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
 }
