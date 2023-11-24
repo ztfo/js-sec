@@ -6,11 +6,11 @@ const User = require('../models/user');
 const path = require('path');
 const { body } = require('express-validator');
 
+// login
 router.get('/login', (req, res) => {
   res.render('login');
 });
 
-// login
 router.post(
   '/login',
   [
