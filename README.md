@@ -1,22 +1,19 @@
 # ZTFO
 # Mini Express App
 
-A small and secure web application built with Node.js and Express, featuring user authentication, session management, and PostgreSQL integration. This app demonstrates modern web development practices with a focus on security and scalability.
+A simple Node.js and Express application demonstrating essential elements of full-stack development, including user interface, server logic, and database operations, with a focus on security.
 
-## Features
+## Core Features
 
-- User registration and login with hashed passwords
-- Email verification using SendGrid
-- Form validation and session management
-- Dashboard view after login
-- PostgreSQL database integration with Sequelize ORM
-- HTTPS support for secure communication
-- Rate limiting and Winston logging
-- Security enhancements with Helmet
+- **User Interfaces**: Registration and login screens.
+- **Server Logic**: Express server managing routes, authentication, and session handling.
+- **Database Integration**: PostgreSQL with Sequelize ORM.
+- **Email Verification**: Implemented using SendGrid.
+- **Enhanced Security**: Features HTTPS, rate limiting, and Helmet.
 
-## Installation
+## Quick Start
 
-1. Clone the repository
+1. Clone the repository: `git clone [repo-link]`
 2. Install dependencies: `npm install`
-3. Set up environment variables (`.env` file)
-4. Run the application: `node app.js`
+3. Set up the `.env` file for environment configuration.
+4. Launch the application: `node app.js` and navigate to `http://localhost:3000`.app.js`
