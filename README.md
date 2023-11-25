@@ -1,5 +1,5 @@
-# XX/ZTFO
-# js-sec
+# ZTFO
+# mini-express-app
 
 This is a secure web application built with Node.js and Express. It includes user authentication with Passport.js, form validation with express-validator, and session management with express-session.
 
