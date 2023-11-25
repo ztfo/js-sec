@@ -8,6 +8,7 @@ passport.use(
   new LocalStrategy(function (username, password, done) {
     User.findOne({ where: { username: username } })
       .then((user) => {
+        console.log(user);
         if (!user) {
           return done(null, false, { message: 'Incorrect username.' });
         }
@@ -24,7 +25,10 @@ passport.use(
           return done(null, user);
         });
       })
-      .catch((err) => done(err));
+      .catch((err) => {
+        console.error(err);
+        return done(err);
+      });
   })
 );
 

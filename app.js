@@ -1,13 +1,14 @@
 // modules
 const express = require('express');
 const passport = require('passport');
+const flash = require('connect-flash');
 require('./passport-config');
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
-const https = require('https');
+// const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { body, validationResult } = require('express-validator');
@@ -25,7 +26,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 // logs
 const logger = winston.createLogger({
-  level: 'info',
+  level: 'debug',
   format: winston.format.json(),
   defaultMeta: { service: 'user-service' },
   transports: [
@@ -51,8 +52,9 @@ app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true },
+  cookie: { secure: false },
 }));
+app.use(flash());
 
 // limiter
 const limiter = rateLimit({
@@ -79,7 +81,7 @@ app.use(function (err, req, res, next) {
 
 // serve
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  res.sendFile(path.join(__dirname, 'public/index.html'));
 });
 
 // auth routes
@@ -90,13 +92,17 @@ app.use('/', authRoutes);
 const userRoutes = require('./routes/userRoutes.js');
 app.use('/users', userRoutes);
 
-// https
-const httpsOptions = {
-  key: fs.readFileSync(process.env.SSL_KEY_PATH),
-  cert: fs.readFileSync(process.env.SSL_CERT_PATH),
-};
+// // https
+// const httpsOptions = {
+//   key: fs.readFileSync(process.env.SSL_KEY_PATH),
+//   cert: fs.readFileSync(process.env.SSL_CERT_PATH),
+// };
 
-// https server
-https.createServer(httpsOptions, app).listen(3000, () => {
+// // https server
+// https.createServer(httpsOptions, app).listen(3000, () => {
+//   console.log('running...');
+// });
+
+app.listen(3000, () => {
   console.log('running...');
 });

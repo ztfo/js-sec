@@ -1,11 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('./index');
 
-sequelize
-  .authenticate()
-  .then(() => console.log('Connection has been established successfully.'))
-  .catch((error) => console.error('Unable to connect to the database:', error));
-
 const User = sequelize.define('User', {
   username: {
     type: DataTypes.STRING,
@@ -33,8 +28,6 @@ const User = sequelize.define('User', {
   }
 });
 
-User.sync({ alter: true })
-    .then(() => console.log('User table created/updated successfully'))
-    .catch(error => console.error('Error creating/updating User table:', error));
+User.sync()
 
 module.exports = User;
