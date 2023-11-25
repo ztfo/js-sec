@@ -1,7 +1,7 @@
 # ZTFO
 # Mini Express App
 
-A simple Node.js and Express application demonstrating essential elements of full-stack development, including user interface, server logic, and database operations, with a focus on security.
+A simple Node.js and Express application exploring essential elements of full-stack development, including user interface, server logic, and database operations, with a focus on security.
 
 ## Core Features
 
@@ -16,4 +16,4 @@ A simple Node.js and Express application demonstrating essential elements of ful
 1. Clone the repository: `git clone [repo-link]`
 2. Install dependencies: `npm install`
 3. Set up the `.env` file for environment configuration.
-4. Launch the application: `node app.js` and navigate to `http://localhost:3000`.app.js`
+4. Launch the application: `node app.js` and navigate to `http://localhost:3000`
