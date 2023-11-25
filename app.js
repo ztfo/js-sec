@@ -3,6 +3,8 @@ const express = require('express');
 const passport = require('passport');
 require('./passport-config');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
+const { Pool } = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
 const https = require('https');
@@ -35,14 +37,22 @@ const logger = winston.createLogger({
 // security headers
 app.use(helmet());
 
+// session store
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+});
+
 // session
-const sessionConfig = {
+app.use(session({
+  store: new pgSession({
+    pool: pool,
+    tableName: 'session',
+  }),
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
-};
-
-app.use(session(sessionConfig));
+  cookie: { secure: true },
+}));
 
 // limiter
 const limiter = rateLimit({
@@ -53,14 +63,14 @@ const limiter = rateLimit({
 
 app.use(limiter);
 
-// passport
-app.use(passport.initialize());
-app.use(passport.session());
-
 // middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use(function (err, req, res, next) {
   logger.error(err.stack);

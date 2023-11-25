@@ -1,23 +1,32 @@
 <!doctype html>
 <html>
-  <head>
-    <title>Registration</title>
-  </head>
-  <body>
-    <h2>Registration Form</h2>
+    <head>
+        <title>Registration</title>
+    </head>
+    <body>
+        <h2>Registration Form</h2>
 
-    <form action="/register" method="post">
-      <div>
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required />
-      </div>
-      <div>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required />
-      </div>
-      <div>
-        <input type="submit" value="Register" />
-      </div>
-    </form>
-  </body>
+        <form action="/register" method="post">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required />
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required />
+            </div>
+            <!-- TODO: remove here for testing -->
+            <div>
+                <label for="isAdmin">Admin:</label>
+                <input type="checkbox" id="isAdmin" name="isAdmin" value="true" />
+            </div>
+            <div>
+                <label for="isApproved">Approved:</label>
+                <input type="checkbox" id="isApproved" name="isApproved" value="true" />
+            </div>
+            <div>
+                <input type="submit" value="Register" />
+            </div>
+        </form>
+    </body>
 </html>

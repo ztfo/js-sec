@@ -4,7 +4,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 const User = require('../models/user');
 const path = require('path');
-const { body } = require('express-validator');
+const { body, validationResult } = require('express-validator');
 
 // login
 router.get('/login', function(req, res) {
@@ -12,15 +12,22 @@ router.get('/login', function(req, res) {
 });
 
 router.post(
-  '/login',
-  [
-    body('username').isLength({ min: 3 }).trim().escape(),
-    body('password').isLength({ min: 5 }).trim().escape(),
-  ],
-  passport.authenticate('local', {
-    successRedirect: '/dashboard',
-    failureRedirect: '/',
-  })
+    '/login',
+    [
+        body('username').isLength({ min: 3 }).trim().escape(),
+        body('password').isLength({ min: 5 }).trim().escape(),
+    ],
+    (req, res, next) => {
+        const errors = validationResult(req);
+        if (!errors.isEmpty()) {
+            return res.status(400).json({ errors: errors.array() });
+        }
+        next();
+    },
+    passport.authenticate('local', {
+        successRedirect: '/dashboard',
+        failureRedirect: '/',
+    })
 );
 
 // authenticated routes
@@ -36,36 +43,36 @@ router.get('/logout', (req, res) => {
 
 // registration
 router.get('/register', (req, res) => {
-  res.sendFile(path.join(__dirname, '../public/register.html'));
+    res.sendFile(path.join(__dirname, '../public/register.html'));
 });
 
 router.post('/register', (req, res) => {
-  console.log('Received register request');
+    console.log('Received register request');
 
-  const { username, password } = req.body;
+    const { username, password, isAdmin, isApproved } = req.body;
 
-  if (!username || !password) {
-    console.log('Missing username or password');
-    return res.status(400).json({ error: 'Missing username or password' });
-  }
-
-  bcrypt.hash(password, 10, (err, hashedPassword) => {
-    if (err) {
-      console.log('Error hashing password:', err);
-      return res.status(500).json({ error: err });
+    if (!username || !password) {
+        console.log('Missing username or password');
+        return res.status(400).json({ error: 'Missing username or password' });
     }
 
-    console.log('Creating user...');
-    User.create({ username, password: hashedPassword, isApproved: false })
-      .then((user) => {
-        console.log('User created:', user);
-        res.json(user);
-      })
-      .catch((err) => {
-        console.log('Error creating user:', err);
-        res.status(400).json('Error: ' + err);
-      });
-  });
+    bcrypt.hash(password, 10, (err, hashedPassword) => {
+        if (err) {
+            console.log('Error hashing password:', err);
+            return res.status(500).json({ error: err });
+        }
+
+        console.log('Creating user...');
+        User.create({ username, password: hashedPassword, isAdmin, isApproved })
+            .then((user) => {
+                console.log('User created:', user);
+                res.json(user);
+            })
+            .catch((err) => {
+                console.log('Error creating user:', err);
+                res.status(400).json('Error: ' + err);
+            });
+    });
 });
 
 function ensureAuthenticated(req, res, next) {
