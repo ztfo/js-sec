@@ -1,5 +1,4 @@
-# ZTFO
-# Mini Express App
+# ZTFO/Mini Express App
 
 A simple Node.js and Express application exploring essential elements of full-stack development, including user interface, server logic, and database operations, with a focus on security.
 
@@ -10,6 +9,12 @@ A simple Node.js and Express application exploring essential elements of full-st
 - **Database Integration**: PostgreSQL with Sequelize ORM.
 - **Email Verification**: Implemented using SendGrid.
 - **Enhanced Security**: Features HTTPS, rate limiting, and Helmet.
+
+## Up Next
+
+- **Admin Interfaces**: Add internal Admin dashboard with user management controls.
+- **Improved Auth and Registration**: Complete logout, Add MFA and time-restricted user invites.
+- **Generic Landing Page** Add homepage and new login route
 
 ## Quick Start
 

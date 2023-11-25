@@ -39,8 +39,16 @@ router.get('/dashboard', ensureAuthenticated, (req, res) => {
 
 // logout
 router.get('/logout', (req, res) => {
-  req.logout();
-  res.redirect('/');
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        req.session.destroy(function(err) {
+            if (err) {
+                console.log('Session destruction error:', err);
+                return next(err);
+            }
+            res.redirect('/');
+        });
+    });
 });
 
 // registration

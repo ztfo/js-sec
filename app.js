@@ -2,19 +2,19 @@
 const express = require('express');
 const passport = require('passport');
 const flash = require('connect-flash');
-require('./passport-config');
+require('./passport-config')(passport);
 const session = require('express-session');
 const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
-// const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const winston = require('winston');
+// const https = require('https');
 require('dotenv').config();
 
 // express
@@ -54,7 +54,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
 }));
-app.use(flash());
 
 // limiter
 const limiter = rateLimit({
@@ -74,6 +73,8 @@ app.use(express.static('public'));
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use(flash());
+
 app.use(function (err, req, res, next) {
   logger.error(err.stack);
   res.status(500).send('ah, shite!');
@@ -92,6 +93,10 @@ app.use('/', authRoutes);
 const userRoutes = require('./routes/userRoutes.js');
 app.use('/users', userRoutes);
 
+app.listen(3000, () => {
+  console.log('running...');
+});
+
 // // https
 // const httpsOptions = {
 //   key: fs.readFileSync(process.env.SSL_KEY_PATH),
@@ -102,7 +107,3 @@ app.use('/users', userRoutes);
 // https.createServer(httpsOptions, app).listen(3000, () => {
 //   console.log('running...');
 // });
-
-app.listen(3000, () => {
-  console.log('running...');
-});
