@@ -116,8 +116,38 @@ router.get('/confirm', async (req, res) => {
             return res.status(400).send('Invalid confirmation link');
         }
 
-        await User.create({ fullName: pendingUser.fullName, email: pendingUser.email });
-        await PendingUser.destroy({ where: { email: payload.email } });
+        // Save the pending user's data in the session
+        req.session.pendingUser = pendingUser;
+
+        // Send the confirm.html file
+        res.sendFile(path.join(__dirname, '../public/confirm.html'));
+    } catch (error) {
+        console.log('Error confirming user:', error);
+        res.status(500).send('An error occurred during confirmation');
+    }
+});
+
+// post new user
+router.post('/confirm', async (req, res) => {
+
+    const { username, email, password } = req.body;
+    const pendingUser = req.session.pendingUser;
+    
+    if (!pendingUser || pendingUser.email !== email) {
+        return res.status(400).send('Invalid confirmation data');
+    }
+
+    try {
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        await User.create({
+            username,
+            email,
+            password: hashedPassword,
+        });
+
+        await PendingUser.destroy({ where: { email } });
 
         res.send('Confirmation successful, you can now log in');
     } catch (error) {
