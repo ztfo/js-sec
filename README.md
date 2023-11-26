@@ -4,6 +4,7 @@ A simple Node.js and Express application exploring essential elements of full-st
 
 ## Core Features
 
+- **Admin Interfaces**: Internal Admin dashboard with user management controls.
 - **User Interfaces**: Registration and login screens.
 - **Server Logic**: Express server managing routes, authentication, and session handling.
 - **Database Integration**: PostgreSQL with Sequelize ORM.
@@ -11,8 +12,6 @@ A simple Node.js and Express application exploring essential elements of full-st
 - **Enhanced Security**: Features HTTPS, rate limiting, and Helmet.
 
 ## Up Next
-
-- **Admin Interfaces**: Add internal Admin dashboard with user management controls.
 - **MFA**: Add multi-factor authentication 
 - **Generic Landing Page** Add homepage and new login route
 
