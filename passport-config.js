@@ -1,5 +1,5 @@
 const LocalStrategy = require('passport-local').Strategy;
-const User = require('./models/user');
+const { User } = require('./models');
 const bcrypt = require('bcrypt');
 
 module.exports = function(passport) {
@@ -31,11 +31,11 @@ module.exports = function(passport) {
   );
 
   passport.serializeUser(function (user, done) {
-    done(null, user.id);
+    done(null, user.userId);
   });
 
-  passport.deserializeUser(function (id, done) {
-    User.findByPk(id)
+  passport.deserializeUser(function (userId, done) {
+    User.findByPk(userId)
       .then((user) => done(null, user))
       .catch((err) => done(err));
   });
