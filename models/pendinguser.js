@@ -19,6 +19,16 @@ module.exports = (sequelize, DataTypes) => {
                 isEmail: true,
             },
         },
+        isApproved: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
+        isAdmin: {
+            type: DataTypes.BOOLEAN,
+            defaultValue: false,
+            allowNull: false,
+        },
         token: {
             type: DataTypes.STRING,
             allowNull: false,

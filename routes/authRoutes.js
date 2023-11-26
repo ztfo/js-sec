@@ -97,7 +97,7 @@ router.get('/confirm', async (req, res) => {
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-        const pendingUser = await PendingUser.findOne({ where: { pendingUserId: payload.id, token, isApproved: true } });
+        const pendingUser = await PendingUser.findOne({ where: { pendingUserId: payload.id, token } });
 
         if (!pendingUser) {
             return res.status(400).send('Invalid confirmation link');
@@ -115,7 +115,7 @@ router.get('/confirm', async (req, res) => {
 // post new user
 router.post('/confirm', async (req, res) => {
     const { username, email, password } = req.body;
-    const pendingUser = req.session.pendingUser;
+    const pendingUser = await PendingUser.findOne({ where: { email } });
     
     if (!pendingUser || pendingUser.email !== email) {
         return res.status(400).send('Invalid confirmation data');
@@ -129,7 +129,7 @@ router.post('/confirm', async (req, res) => {
             username,
             email,
             password: hashedPassword,
-            isApproved: pendingUser.isApproved,
+            isApproved: true,
             isAdmin: pendingUser.isAdmin
         });
 

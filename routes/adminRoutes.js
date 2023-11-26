@@ -19,12 +19,11 @@ router.get('/pendingUsers', isAdmin, async (req, res) => {
 router.post('/approveUser/:id', isAdmin, async (req, res) => {
     const user = await PendingUser.findByPk(req.params.id);
     if (user) {
-        user.isApproved = true;
         user.isAdmin = req.body.isAdmin === 'on';
         user.token = jwt.sign({ id: user.pendingUserId }, process.env.JWT_SECRET, { expiresIn: '1d' });
         await user.save();
 
-        // Send confirmation email to the user
+        // confirmation email
         const msg = {
             to: user.email,
             from: 'hello@builtwithwords.ai',
