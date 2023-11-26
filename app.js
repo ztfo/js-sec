@@ -37,7 +37,21 @@ const logger = winston.createLogger({
 });
 
 // security headers
-app.use(helmet());
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'"],
+      styleSrc: ["'self'"],
+      imgSrc: ["'self'"],
+      connectSrc: ["'self'"],
+      fontSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      mediaSrc: ["'self'"],
+      frameSrc: ["'none'"],
+    },
+  },
+}));
 
 // session store
 const pool = new Pool({
@@ -93,6 +107,10 @@ app.use('/', authRoutes);
 // user routes
 const userRoutes = require('./routes/userRoutes.js');
 app.use('/users', userRoutes);
+
+// admin routes
+const adminRoutes = require('./routes/adminRoutes.js');
+app.use('/admin', adminRoutes);
 
 app.listen(3000, () => {
   console.log('running...');

@@ -84,20 +84,7 @@ router.post('/register', [
         await PendingUser.create({ fullName, email, token });
         console.log('Pending user created');
 
-        const msg = {
-            to: email,
-            from: 'hello@builtwithwords.ai',
-            subject: 'Complete your registration',
-            text: `You're almost there! Click the link below to complete your registration: http://localhost:3000/confirm?token=${token}`,
-        };
-
-        mailer.send(msg).then(() => {
-            console.log('Email sent');
-        }).catch((error) => {
-            console.log('Error sending email:', error);
-        });
-
-        res.send('Registration successful, please check your email for confirmation');
+        res.send('Registration requested. If approved, you will receive a confirmation email shortly.');
     } catch (error) {
         console.log('Error creating pending user:', error);
         res.status(500).send('An error occurred during registration');
@@ -110,16 +97,14 @@ router.get('/confirm', async (req, res) => {
 
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET);
-        const pendingUser = await PendingUser.findOne({ where: { email: payload.email, token } });
+        const pendingUser = await PendingUser.findOne({ where: { pendingUserId: payload.id, token, isApproved: true } });
 
         if (!pendingUser) {
             return res.status(400).send('Invalid confirmation link');
         }
 
-        // Save the pending user's data in the session
         req.session.pendingUser = pendingUser;
 
-        // Send the confirm.html file
         res.sendFile(path.join(__dirname, '../public/confirm.html'));
     } catch (error) {
         console.log('Error confirming user:', error);
@@ -129,7 +114,6 @@ router.get('/confirm', async (req, res) => {
 
 // post new user
 router.post('/confirm', async (req, res) => {
-
     const { username, email, password } = req.body;
     const pendingUser = req.session.pendingUser;
     
@@ -145,9 +129,13 @@ router.post('/confirm', async (req, res) => {
             username,
             email,
             password: hashedPassword,
+            isApproved: pendingUser.isApproved,
+            isAdmin: pendingUser.isAdmin
         });
 
         await PendingUser.destroy({ where: { email } });
+
+        delete req.session.pendingUser;
 
         res.send('Confirmation successful, you can now log in');
     } catch (error) {

@@ -7,6 +7,9 @@
     <body>
         <h1>Dashboard</h1>
         <p>Welcome to the dashboard, <%= user.username %></p>
+        <% if (user.isAdmin) { %>
+            <a href="/admin/pendingUsers">View Pending Users</a>
+        <% } %>
         <a href="/logout">Logout</a>
     </body>
 </html>
