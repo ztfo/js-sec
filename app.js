@@ -8,6 +8,7 @@ const pgSession = require('connect-pg-simple')(session);
 const { Pool } = require('pg');
 const LocalStrategy = require('passport-local').Strategy;
 const User = require('./models/user');
+const PendingUser = require('./models/pendingUser');
 const fs = require('fs');
 const path = require('path');
 const { body, validationResult } = require('express-validator');
@@ -86,7 +87,7 @@ app.get('/', (req, res) => {
 });
 
 // auth routes
-const authRoutes = require('./routes/auth.js');
+const authRoutes = require('./routes/authRoutes.js');
 app.use('/', authRoutes);
 
 // user routes
