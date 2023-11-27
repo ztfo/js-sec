@@ -37,13 +37,20 @@ const logger = winston.createLogger({
 });
 
 // security headers
+app.use((req, res, next) => {
+  // Generate a nonce
+  req.nonce = crypto.randomBytes(16).toString('base64');
+
+  next();
+});
+
 app.use(helmet({
   contentSecurityPolicy: {
     directives: {
       defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
+      scriptSrc: ["'self'", (req, res) => `'nonce-${req.nonce}'`],
       styleSrc: ["'self'"],
-      imgSrc: ["'self'"],
+      imgSrc: ["'self'", "data:"],
       connectSrc: ["'self'"],
       fontSrc: ["'self'"],
       objectSrc: ["'none'"],
