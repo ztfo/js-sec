@@ -8,14 +8,15 @@ const jwt = require('jsonwebtoken');
 const path = require('path');
 const { body, validationResult } = require('express-validator');
 const mailer = require('../utils/mailer');
+const speakeasy = require('speakeasy');
+const QRCode = require('qrcode');
 
 // login
 router.get('/login', function(req, res) {
     res.sendFile(path.join(__dirname, '../public', 'login.html'));
 });
 
-router.post(
-    '/login',
+router.post('/login',
     [
         body('username').isLength({ min: 3 }).trim().escape(),
         body('password').isLength({ min: 5 }).trim().escape(),
@@ -29,11 +30,49 @@ router.post(
         next();
     },
     passport.authenticate('local', {
-        successRedirect: '/dashboard',
         failureRedirect: '/',
         failureFlash: true,
-    })
-);
+    }),
+    async (req, res) => {
+        const user = await User.findOne({ where: { username: req.body.username } });
+
+        if (user && user.mfaSecret) {
+            res.redirect('/enter-mfa-token');
+        } else {
+            res.redirect('/dashboard');
+        }
+});
+
+// verify mfa token
+router.post('/verify-mfa-login', async (req, res) => {
+    const { token, username } = req.body;
+    const user = await User.findOne({ where: { username } });
+
+    if (!user) {
+        return res.status(400).send('User not found');
+    }
+
+    const verified = speakeasy.totp.verify({
+        secret: user.mfaSecret,
+        encoding: 'base32',
+        token: token
+    });
+
+    if (verified) {
+        // MFA verification successful, log the user in
+        req.login(user, function(err) {
+            if (err) {
+                console.log(err);
+                return res.status(500).send('An error occurred during login');
+            }
+
+            return res.redirect('/dashboard');
+        });
+    } else {
+        // MFA verification failed
+        res.status(400).send('Invalid token');
+    }
+});
 
 // authenticated routes
 router.get('/dashboard', ensureAuthenticated, (req, res) => {
@@ -112,35 +151,80 @@ router.get('/confirm', async (req, res) => {
     }
 });
 
-// post new user
 router.post('/confirm', async (req, res) => {
-    const { username, email, password } = req.body;
-    const pendingUser = await PendingUser.findOne({ where: { email } });
-    
-    if (!pendingUser || pendingUser.email !== email) {
-        return res.status(400).send('Invalid confirmation data');
-    }
-
     try {
+        const { email, password } = req.body;
+        const pendingUser = await PendingUser.findOne({ where: { email } });
+
+        if (!pendingUser) {
+            return res.status(400).send('Invalid confirmation link');
+        }
+
+        if (password !== pendingUser.password) {
+            return res.status(400).send('Passwords do not match');
+        }
+
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        await User.create({
-            username,
+        const user = await User.create({
+            username: pendingUser.username,
             email,
             password: hashedPassword,
-            isApproved: true,
+            isApproved: false, 
             isAdmin: pendingUser.isAdmin
         });
 
-        await PendingUser.destroy({ where: { email } });
+        // secret key
+        const secret = speakeasy.generateSecret({length: 20});
+        user.mfaSecret = secret.base32;
+        await user.save();
 
-        delete req.session.pendingUser;
+        // qr code
+        QRCode.toDataURL(secret.otpauth_url, function(err, data_url) {
+            if (err) {
+                console.log('Error generating QR code:', err);
+                return res.status(500).send('An error occurred during confirmation');
+            }
 
-        res.send('Confirmation successful, you can now log in');
+            // qr code url
+            res.json({qrCode: data_url});
+        });
     } catch (error) {
         console.log('Error confirming user:', error);
         res.status(500).send('An error occurred during confirmation');
+    }
+});
+
+// verify mfa
+router.post('/verify-mfa', async (req, res) => {
+    const { token, email } = req.body;
+    const user = await User.findOne({ where: { email } });
+
+    if (!user) {
+        return res.status(400).send('User not found');
+    }
+
+    const verified = speakeasy.totp.verify({
+        secret: user.mfaSecret,
+        encoding: 'base32',
+        token: token
+    });
+
+    if (verified) {
+        
+        user.isApproved = true;
+        await user.save();
+
+        const pendingUser = await PendingUser.findOne({ where: { email } });
+        if (pendingUser) {
+            await pendingUser.destroy();
+        }
+
+        res.redirect('/login');
+
+    } else {
+        res.status(400).send('Invalid token');
     }
 });
 

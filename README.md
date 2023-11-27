@@ -13,7 +13,7 @@ A simple Node.js and Express application exploring essential elements of full-st
 
 ## Up Next
 - **MFA**: Add multi-factor authentication 
-- **Generic Landing Page** Add homepage and new login route
+- **Generic Landing Page**: Add homepage and new login route
 
 ## Quick Start
 
