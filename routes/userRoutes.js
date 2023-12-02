@@ -22,4 +22,22 @@ router.post('/approve/:userId', async (req, res) => {
     res.json({ message: 'Approved' });
 });
 
+router.post('/update-budget-timeframe', async (req, res) => {
+    const { budget, timeframe } = req.body;
+    const userId = req.user.id; // Adjust according to how you handle authentication
+  
+    try {
+      await User.update(
+        { budget, timeframe },
+        { where: { id: userId } }
+      );
+      res.redirect('/dashboard'); // Redirect back to the dashboard
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Internal Server Error');
+    }
+  });
+
+
+
 module.exports = router;

@@ -112,6 +112,10 @@ app.use('/users', userRoutes);
 const adminRoutes = require('./routes/adminRoutes.js');
 app.use('/admin', adminRoutes);
 
+// budget routes
+const budgetRoutes = require('./routes/budgetRoutes');
+app.use('/budgets', budgetRoutes);
+
 app.listen(3000, () => {
   console.log('running...');
 });
