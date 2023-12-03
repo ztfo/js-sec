@@ -11,7 +11,7 @@ const mailer = require('../utils/mailer');
 
 // login
 router.get('/login', function(req, res) {
-    res.render('login');
+    res.render('auth/login');
 });
 
 router.post(
@@ -56,7 +56,7 @@ router.get('/logout', (req, res) => {
 
 // registration request
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('auth/register');
 });
 
 router.post('/register', [
@@ -105,7 +105,7 @@ router.get('/confirm', async (req, res) => {
 
         req.session.pendingUser = pendingUser;
 
-       res.render('confirm', { pendingUser });
+       res.render('auth/confirm', { pendingUser });
     } catch (error) {
         console.log('Error confirming user:', error);
         res.status(500).send('An error occurred during confirmation');
