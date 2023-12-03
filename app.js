@@ -95,9 +95,9 @@ app.use(function (err, req, res, next) {
   res.status(500).send('ah, shite!');
 });
 
-// serve
+// index
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public/index.html'));
+  res.render('index');
 });
 
 // auth routes
@@ -115,6 +115,10 @@ app.use('/admin', adminRoutes);
 // budget routes
 const budgetRoutes = require('./routes/budgetRoutes');
 app.use('/budgets', budgetRoutes);
+
+// wager routes
+const wagerRoutes = require('./routes/wagerRoutes');
+app.use('/wagers', wagerRoutes);
 
 app.listen(3000, () => {
   console.log('running...');

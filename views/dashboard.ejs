@@ -2,25 +2,31 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Dashboard</title>
     </head>
     <body>
-        <h1>Dashboard</h1>
-        <p>Welcome to the dashboard, <%= user.username %></p>
-        <div class="budget-form">
-            <form action="/update-budget-timeframe" method="POST">
-                <label for="budget">Budget:</label>
-                <input type="number" id="budget" name="budget" value="<%= user.budget %>">
-              
-                <label for="timeframe">Timeframe:</label>
-                <input type="date" id="timeframe" name="timeframe" value="<%= user.timeframe %>">
-              
-                <button type="submit">Save</button>
-              </form> 
-        </div>
-        <% if (user.isAdmin) { %>
-            <a href="/admin/pendingUsers">View Pending Users</a>
-        <% } %>
-        <a href="/logout">Logout</a>
+        <header>
+            <span>Wager</span>
+        </header>
+        <nav class="main-nav">
+            <ul>
+                <li>
+                    <% if (user.isAdmin) { %>
+                        <a href="/admin/pendingUsers">Invites</a>
+                    <% } %>
+                </li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <main class="app">
+            <section class="dashboard-header">
+                <h1>Dashboard</h1>
+                <p>Welcome to the dashboard, <%= user.username %></p>
+            </section>
+            <section>
+            
+            </section>
+        </main>
     </body>
 </html>
