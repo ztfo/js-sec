@@ -1,0 +1,19 @@
+{
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+  "plugins": ["prettier"],
+  "env": {
+    "node": true,
+    "browser": true
+  },
+  "globals": {
+    "User": "writable",
+    "bcrypt": "writable"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "rules": {
+    "no-unused-vars": "off",
+    "prettier/prettier": "error"
+  }
+}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Dashboard</title>
+    </head>
+    <body>
+        <header>
+            <span>Wager</span>
+        </header>
+        <nav class="main-nav">
+            <ul>
+                <li>
+                    <% if (user.isAdmin) { %>
+                        <a href="/admin/pendingUsers">Invites</a>
+                    <% } %>
+                </li>
+                <li><a href="/wagers/new">New Wager</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+        <main class="app">
+            <section class="dashboard-header">
+                <h1>Dashboard</h1>
+                <p>Welcome to the dashboard, <%= user.username %></p>
+            </section>
+            <section>
+            
+            </section>
+        </main>
+    </body>
+</html>
