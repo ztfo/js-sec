@@ -15,11 +15,13 @@ const { body, validationResult } = require('express-validator');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const winston = require('winston');
+const crypto = require('crypto');
 // const https = require('https');
 require('dotenv').config();
 
 // express
 const app = express();
+console.log('Starting app.js');
 
 // view engine
 app.set('view engine', 'ejs');
@@ -100,6 +102,11 @@ app.get('/', (req, res) => {
   res.render('index');
 });
 
+app.use((req, res, next) => {
+  console.log(`Received request: ${req.method} ${req.path}`);
+  next();
+});
+
 // auth routes
 const authRoutes = require('./routes/authRoutes.js');
 app.use('/', authRoutes.router);
@@ -123,6 +130,8 @@ app.use('/wagers', wagerRoutes);
 app.listen(3000, () => {
   console.log('running...');
 });
+
+
 
 // // https
 // const httpsOptions = {
