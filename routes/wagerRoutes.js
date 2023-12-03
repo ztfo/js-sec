@@ -1,9 +1,15 @@
 const express = require('express');
 const router = express.Router();
 const { Wager } = require('../models');
+const { ensureAuthenticated } = require('./authRoutes'); // Import the middleware
 
-// wagers
-router.post('/', async (req, res) => {
+// wager form
+router.get('/new', ensureAuthenticated, (req, res) => { // Apply the middleware
+    res.render('wagerForm');
+});
+
+// wager
+router.post('/', ensureAuthenticated, async (req, res) => { // Apply the middleware
     try {
         // wager data from the request body
         const { amount, date } = req.body;
@@ -24,11 +30,6 @@ router.post('/', async (req, res) => {
     } catch (error) {
         res.status(500).json({ error: error.message });
     }
-});
-
-// new wager
-router.get('/new', (req, res) => {
-    res.render('wagerForm');
 });
 
 module.exports = router;

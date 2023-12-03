@@ -102,7 +102,7 @@ app.get('/', (req, res) => {
 
 // auth routes
 const authRoutes = require('./routes/authRoutes.js');
-app.use('/', authRoutes);
+app.use('/', authRoutes.router);
 
 // user routes
 const userRoutes = require('./routes/userRoutes.js');

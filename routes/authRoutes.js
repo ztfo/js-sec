@@ -151,4 +151,7 @@ function ensureAuthenticated(req, res, next) {
   res.redirect('/login');
 }
 
-module.exports = router;
+module.exports = {
+    router,
+    ensureAuthenticated,
+};
