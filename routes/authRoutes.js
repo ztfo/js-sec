@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const { User } = require('../models');
 const { PendingUser } = require('../models');
 const jwt = require('jsonwebtoken');
@@ -122,8 +122,8 @@ router.post('/confirm', async (req, res) => {
     }
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
 
         await User.create({
             username,

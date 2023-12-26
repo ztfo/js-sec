@@ -1,6 +1,6 @@
 const LocalStrategy = require('passport-local').Strategy;
 const { User } = require('./models');
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 
 module.exports = function(passport) {
   passport.use(
@@ -13,7 +13,7 @@ module.exports = function(passport) {
           if (!user.isApproved) {
             return done(null, false, { message: 'You\'re not in yet.' });
           }
-          bcrypt.compare(password, user.password, (err, isMatch) => {
+          bcryptjs.compare(password, user.password, (err, isMatch) => {
             if (err) {
               return done(err);
             }
