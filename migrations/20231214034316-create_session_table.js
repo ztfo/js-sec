@@ -1,21 +1,22 @@
-'use strict';
-
-/** @type {import('sequelize-cli').Migration} */
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('Sessions', {
+    await queryInterface.createTable('session', {
       sid: {
         type: Sequelize.STRING,
         allowNull: false,
         primaryKey: true,
       },
-      userId: Sequelize.STRING,
-      expires: Sequelize.DATE,
-      data: Sequelize.STRING(50000),
+      sess: {
+        type: Sequelize.JSON,
+        allowNull: false,
+      },
+      expire: {
+        type: Sequelize.DATE(6),
+        allowNull: false,
+      },
     });
   },
-
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('Sessions');
-  }
+    await queryInterface.dropTable('session');
+  },
 };
