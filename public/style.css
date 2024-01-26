@@ -1,0 +1,53 @@
+/* body and layout */
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    font-family: 'Roboto Slab', serif;
+    color: #fff;
+}
+
+.flex-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.flex-item {
+    max-width: 33rem;
+}
+
+/* navigation */
+
+.main-nav {
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: center;
+    font-family: Helvetica, sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;;
+}
+
+.main-nav ul {
+    display: flex;
+    margin: 0;
+    padding: 0;
+}
+
+.main-nav li {
+    list-style: none;
+    margin: 0;
+    padding: 0 1rem;
+}   
+
+/* links */
+
+a {
+    text-decoration: none;
+    color: #fff;
+    font-size: 1rem;
+}
+
+
