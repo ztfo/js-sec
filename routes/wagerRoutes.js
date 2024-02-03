@@ -5,7 +5,7 @@ const { ensureAuthenticated } = require('./authRoutes'); // Import the middlewar
 
 // wager form
 router.get('/new', ensureAuthenticated, (req, res) => { // Apply the middleware
-    res.render('wagerForm');
+    res.render('components/wagerForm');
 });
 
 // wager

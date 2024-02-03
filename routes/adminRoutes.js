@@ -13,7 +13,7 @@ function isAdmin(req, res, next) {
 
 router.get('/pendingUsers', isAdmin, async (req, res) => {
     const pendingUsers = await PendingUser.findAll();
-    res.render('pendingUsers', { pendingUsers });
+    res.render('components/pendingUsers', { pendingUsers });
 });
 
 router.post('/approveUser/:id', isAdmin, async (req, res) => {

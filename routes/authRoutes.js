@@ -1,7 +1,7 @@
 const express = require('express');
 const passport = require('passport');
 const router = express.Router();
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const { User } = require('../models');
 const { PendingUser } = require('../models');
 const jwt = require('jsonwebtoken');
@@ -11,7 +11,7 @@ const mailer = require('../utils/mailer');
 
 // login
 router.get('/login', function(req, res) {
-    res.render('login');
+    res.render('auth/login');
 });
 
 router.post(
@@ -56,7 +56,7 @@ router.get('/logout', (req, res) => {
 
 // registration request
 router.get('/register', (req, res) => {
-    res.render('register');
+    res.render('auth/register');
 });
 
 router.post('/register', [
@@ -105,7 +105,7 @@ router.get('/confirm', async (req, res) => {
 
         req.session.pendingUser = pendingUser;
 
-       res.render('confirm', { pendingUser });
+       res.render('auth/confirm', { pendingUser });
     } catch (error) {
         console.log('Error confirming user:', error);
         res.status(500).send('An error occurred during confirmation');
@@ -122,8 +122,8 @@ router.post('/confirm', async (req, res) => {
     }
 
     try {
-        const salt = await bcrypt.genSalt(10);
-        const hashedPassword = await bcrypt.hash(password, salt);
+        const salt = await bcryptjs.genSalt(10);
+        const hashedPassword = await bcryptjs.hash(password, salt);
 
         await User.create({
             username,

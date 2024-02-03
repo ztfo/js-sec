@@ -21,7 +21,6 @@ require('dotenv').config();
 
 // express
 const app = express();
-console.log('Starting app.js');
 
 // view engine
 app.set('view engine', 'ejs');
@@ -85,6 +84,7 @@ app.use(limiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use('/node_modules', express.static(path.join(__dirname, 'node_modules')))
 
 // passport
 app.use(passport.initialize());
